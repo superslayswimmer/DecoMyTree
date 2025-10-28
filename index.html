@@ -14,19 +14,20 @@
     h1 { font-size: 3em; margin-top: 20px; }
     #messageForm { margin-top: 50px; }
     input, textarea, button { padding: 10px; margin: 5px; border-radius: 10px; border: none; }
-    button { background-color: red; color: white; cursor: pointer; }
+    button { background-color: red; color: white; cursor: pointer; font-weight: bold; }
     #messages { margin-top: 40px; }
     .hidden { display: none; }
+    li { margin: 10px 0; font-size: 1.2em; }
   </style>
 </head>
 <body>
   <h1>🎄 Liv's Christmas Tree 🎄</h1>
-  <p>Write a message for Christmas Day! 💌</p>
+  <p>Write a message for Christmas Day! 💌✨</p>
 
   <div id="messageForm">
     <input type="text" id="name" placeholder="Your name" required><br>
     <textarea id="message" placeholder="Your message" rows="4" cols="30" required></textarea><br>
-    <button onclick="saveMessage()">Send Message</button>
+    <button onclick="saveMessage()">Send Message 🎁</button>
   </div>
 
   <div id="messages" class="hidden">
@@ -35,7 +36,8 @@
   </div>
 
   <script>
-    const unlockDate = new Date('December 25, 2187 00:00:00'); // IT'S 2187 😏
+    // IT'S THIS CHRISTMAS 2025 YAAAAASSS 💖
+    const unlockDate = new Date('December 25, 2025 00:00:00'); 
     let messages = [];
 
     function saveMessage() {
@@ -45,7 +47,7 @@
         messages.push({name, msg});
         document.getElementById('name').value = '';
         document.getElementById('message').value = '';
-        alert('Message saved! It will unlock on Christmas 🎄');
+        alert('Message saved! It will unlock this Christmas 🎄💌');
       }
     }
 
@@ -58,7 +60,7 @@
         list.innerHTML = '';
         messages.forEach(m => {
           const li = document.createElement('li');
-          li.textContent = `${m.name}: ${m.msg}`;
+          li.textContent = `✨ ${m.name}: ${m.msg} ✨`;
           list.appendChild(li);
         });
       }

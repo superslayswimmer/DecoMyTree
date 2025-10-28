@@ -1,72 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Liv's Christmas Tree 🎄</title>
-  <style>
-    body {
-      background: url('https://i.imgur.com/Gp2A4zP.jpg') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Comic Sans MS', cursive;
-      text-align: center;
-      color: white;
-    }
-    h1 { font-size: 3em; margin-top: 20px; }
-    #messageForm { margin-top: 50px; }
-    input, textarea, button { padding: 10px; margin: 5px; border-radius: 10px; border: none; }
-    button { background-color: red; color: white; cursor: pointer; font-weight: bold; }
-    #messages { margin-top: 40px; }
-    .hidden { display: none; }
-    li { margin: 10px 0; font-size: 1.2em; }
-  </style>
+<meta charset="UTF-8">
+<title>Liv's Christmas Tree 🎄</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: url('bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Comic Sans MS', cursive;
+    text-align: center;
+    color: white;
+    overflow-x: hidden;
+  }
+
+  h1 { font-size: 3em; margin-top: 20px; text-shadow: 2px 2px green; }
+  #messageForm { margin-top: 50px; }
+  input, textarea, button {
+    padding: 10px; margin: 5px; border-radius: 10px; border: none;
+  }
+  button {
+    background-color: red; color: white; font-weight: bold; cursor: pointer;
+  }
+
+  #tree {
+    position: relative;
+    margin: 50px auto;
+    width: 300px;
+    height: 400px;
+  }
+
+  .ornament {
+    position: absolute;
+    background: red;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px yellow;
+    animation: bounce 2s infinite;
+    font-weight: bold;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .hidden { display: none; }
+
+  /* Snow animation */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    color: white;
+    font-size: 1em;
+    user-select: none;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(100vh); }
+  }
+</style>
 </head>
 <body>
-  <h1>🎄 Liv's Christmas Tree 🎄</h1>
-  <p>Write a message for Christmas Day! 💌✨</p>
 
-  <div id="messageForm">
-    <input type="text" id="name" placeholder="Your name" required><br>
-    <textarea id="message" placeholder="Your message" rows="4" cols="30" required></textarea><br>
-    <button onclick="saveMessage()">Send Message 🎁</button>
-  </div>
+<h1>🎄 Liv's Christmas Tree 🎄</h1>
+<p>Write a message for Christmas Day! 💌✨</p>
 
-  <div id="messages" class="hidden">
-    <h2>🎅 Messages Unlocked! 🎅</h2>
-    <ul id="messageList"></ul>
-  </div>
+<div id="messageForm">
+  <input type="text" id="name" placeholder="Your name" required><br>
+  <textarea id="message" placeholder="Your message" rows="4" cols="30" required></textarea><br>
+  <button onclick="saveMessage()">Send Message 🎁</button>
+</div>
 
-  <script>
-    // IT'S THIS CHRISTMAS 2025 YAAAAASSS 💖
-    const unlockDate = new Date('December 25, 2025 00:00:00'); 
-    let messages = [];
+<div id="tree" class="hidden"></div>
 
-    function saveMessage() {
-      const name = document.getElementById('name').value;
-      const msg = document.getElementById('message').value;
-      if(name && msg) {
-        messages.push({name, msg});
-        document.getElementById('name').value = '';
-        document.getElementById('message').value = '';
-        alert('Message saved! It will unlock this Christmas 🎄💌');
-      }
+<script>
+  // Unlock this Christmas 2025 💖
+  const unlockDate = new Date('December 25, 2025 00:00:00');
+  let messages = [];
+
+  function saveMessage() {
+    const name = document.getElementById('name').value;
+    const msg = document.getElementById('message').value;
+    if(name && msg) {
+      messages.push({name, msg});
+      document.getElementById('name').value = '';
+      document.getElementById('message').value = '';
+      alert('Message saved! It will unlock this Christmas 🎄💌');
     }
+  }
 
-    function checkUnlock() {
-      const now = new Date();
-      if(now >= unlockDate) {
-        document.getElementById('messageForm').classList.add('hidden');
-        document.getElementById('messages').classList.remove('hidden');
-        const list = document.getElementById('messageList');
-        list.innerHTML = '';
-        messages.forEach(m => {
-          const li = document.createElement('li');
-          li.textContent = `✨ ${m.name}: ${m.msg} ✨`;
-          list.appendChild(li);
-        });
-      }
+  function showTree() {
+    const tree = document.getElementById('tree');
+    tree.innerHTML = '';
+    messages.forEach((m, i) => {
+      const ornament = document.createElement('div');
+      ornament.className = 'ornament';
+      ornament.textContent = `${m.name}`;
+      // Random position on tree
+      ornament.style.left = Math.random() * 250 + 'px';
+      ornament.style.top = Math.random() * 350 + 'px';
+      tree.appendChild(ornament);
+    });
+  }
+
+  function checkUnlock() {
+    const now = new Date();
+    if(now >= unlockDate) {
+      document.getElementById('messageForm').classList.add('hidden');
+      const tree = document.getElementById('tree');
+      tree.classList.remove('hidden');
+      showTree();
     }
+  }
 
-    setInterval(checkUnlock, 1000);
-  </script>
+  setInterval(checkUnlock, 1000);
+
+  // Snow effect
+  function createSnow() {
+    const snowflake = document.createElement('div');
+    snowflake.className = 'snowflake';
+    snowflake.style.left = Math.random() * window.innerWidth + 'px';
+    snowflake.style.fontSize = Math.random() * 20 + 10 + 'px';
+    snowflake.textContent = '❄';
+    snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
+    document.body.appendChild(snowflake);
+    setTimeout(() => snowflake.remove(), 10000);
+  }
+  setInterval(createSnow, 200);
+</script>
+
 </body>
 </html>
